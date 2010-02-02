@@ -41,7 +41,8 @@
 
     dataStorage = [[RLOfflineDataStore alloc] initWithName:@"HelloWorld" delegate:self];
     //[dataStorage setValue:@"World" forKey:@"word1"];
-    [dataStorage getValueForKey:@"HelloWorldTestApp"];
+    if(dataStorage)
+        [dataStorage getValueForKey:@"HelloWorldTestApp"];
 
     //[dataStorage removeValueForKey:@"word1"];
     
@@ -60,8 +61,21 @@
 
 - (void)setNewValue:(id)sender
 {
-    [dataStorage setValue:[sender intValue] forKey:@"HelloWorldTestApp"];
+    if(dataStorage)
+        [dataStorage setValue:[sender intValue] forKey:@"HelloWorldTestApp"];
+
     [label setStringValue:[sender intValue]];
     [label sizeToFit];
+}
+
+
+- (void)dataStoreIsNotSupported
+{
+    alert("Your browser doesn't support offline storage and stuff");
+}
+
+- (void)userDidRejectDatabase
+{
+    alert("Dude. If you want offline storage you have to click the \"accept\" button!!!");
 }
 @end

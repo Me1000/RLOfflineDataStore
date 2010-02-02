@@ -37,8 +37,11 @@
 {
     _delegate = anObject;
 
-    if ([RLOfflineDataStore offlineDataStoreIsAvailable])
-        [CPException exceptionWithName:@"RLOfflineDataStore" reason:@"Offline storage is not supported for this browser." userInfo:nil];
+    if (![RLOfflineDataStore offlineDataStoreIsAvailable] && [_delegate respondsToSelector:@selector(dataStoreIsNotSupported)])
+    {
+        [_delegate dataStoreIsNotSupported];
+        return;
+    }
 
     self = [super init];
     if (self)
@@ -49,9 +52,15 @@
         _db = openDatabase('RCOfflineDataStore-' + _name, '1.0', _name, _size);
 
         if(!_db && [_delegate respondsToSelector:@selector(userDidRejectDatabase)])
+        {
             [_delegate userDidRejectDatabase];
+            return;
+        }
         else if(!_db)
+        {
             [CPException exceptionWithName:@"RLOfflineDataStore" reason:@"Offline storage was rejected by the user." userInfo:nil];
+            return;
+        }
 
         _db.transaction(function(_db){
                 _db.executeSql( 'CREATE TABLE IF NOT EXISTS RLOfflineDataStore (key TEXT UNIQUE NOT NULL PRIMARY KEY, value TEXT NOT NULL)' );
