@@ -2,8 +2,8 @@
  * AppController.j
  * dbstore
  *
- * Created by You on February 2, 2010.
- * Copyright 2010, Your Company All rights reserved.
+ * Created by Randall Luecke on February 2, 2010.
+ * Copyright 2010, Randall Luecke All rights reserved.
  */
 
 @import <Foundation/CPObject.j>
