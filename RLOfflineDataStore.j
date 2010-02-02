@@ -76,7 +76,7 @@
 - (void)getValueForKey:(CPString)aKey
 {
     _db.transaction(function(db){
-        db.executeSql("SELECT value FROM RLOfflineDataStore WHERE key=?",[aKey], function result(text, result){[self _parseResults:result];}, function anError(text, theError){});
+        db.executeSql("SELECT value FROM RLOfflineDataStore WHERE key=?",[aKey], function result(text, result){[self _parseResults:result]; [[CPRunLoop currentRunLoop] limitDateForMode:nil]}, function anError(text, theError){});
     });
 }
 
