@@ -1,5 +1,5 @@
 /*
- * RLOfflineDataStore.j
+ * RLOfflineDataBaseStore.j
  * AppKit
  *
  * Created by Randall Luecke.
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-@implementation RLOfflineDataStore : CPObject
+@implementation RLOfflineDatabaseStore : CPObject
 {
     CPString    _name;
     double      _size;
@@ -67,6 +67,16 @@
         });
     }
     return self;
+}
+
+- (void)blahsetValue:(CPString)aValue forKey:(CPString)aKey
+{
+    localStorage.setItem(aKey, aValue);
+}
+
+- (CPString)blahgetValueForKey:(CPString)aKey
+{
+    return localStorage.getItem(aKey);
 }
 
 - (void)setValue:(CPString)aValue forKey:(CPString)aKey

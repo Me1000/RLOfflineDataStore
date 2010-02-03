@@ -7,7 +7,8 @@
  */
 
 @import <Foundation/CPObject.j>
-@import "RLOfflineDataStore.j"
+@import "RLOfflineDatabaseStore.j"
+@import "RLOfflineLocalStorage.j"
 
 
 @implementation AppController : CPObject
@@ -39,15 +40,19 @@
     // Uncomment the following line to turn on the standard menu bar.
     //[CPMenu setMenuBarVisible:YES];
 
-    dataStorage = [[RLOfflineDataStore alloc] initWithName:@"HelloWorld" delegate:self];
+    dataStorage = [[RLOfflineLocalStorage alloc] initWithName:@"HelloWorld" delegate:self];
     //[dataStorage setValue:@"World" forKey:@"word1"];
-    if(dataStorage)
-        [dataStorage getValueForKey:@"HelloWorldTestApp"];
+    //if(dataStorage)
+    var value = [dataStorage getValueForKey:@"HelloWorldTestApp"];
+   
+    [label setStringValue:value];
+    [label sizeToFit];
 
     //[dataStorage removeValueForKey:@"word1"];
     
     aButton = [[CPSlider alloc] initWithFrame:CGRectMake(100,100,100,24)];
     [aButton setTarget:self];
+    [aButton setIntValue:value];
     [aButton setAction:@selector(setNewValue:)];
     [contentView addSubview:aButton];
 }
@@ -61,17 +66,21 @@
 
 - (void)setNewValue:(id)sender
 {
-    if(dataStorage)
+    //if(dataStorage)
         [dataStorage setValue:[sender intValue] forKey:@"HelloWorldTestApp"];
 
     [label setStringValue:[sender intValue]];
     [label sizeToFit];
 }
 
+- (void)dataStoreIsNotSupported
+{
+    alert("Your browser doesn\'t support offline localStorage.");
+}
 
 - (void)dataStoreIsNotSupported
 {
-    alert("Your browser doesn't support offline storage and stuff");
+    alert("Your browser doesn\'t support offline database storage and stuff");
 }
 
 - (void)userDidRejectDatabase
